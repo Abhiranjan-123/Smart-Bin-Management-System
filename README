@@ -1,0 +1,139 @@
+# ♻️ Smart Bin Management System
+
+An end-to-end, IoT-powered Smart Waste Management platform built with Next.js, Node.js, Express, and MongoDB Atlas. The system enables real-time waste monitoring, automated officer dispatch alerts, gamified field task resolution, and live synchronization between field officers and administrative dashboards.
+
+---
+
+## 🌟 Key Features
+
+* **Real-time Telemetry Dashboard**: Monitors fill levels, battery status, odor levels, and operational statuses (`NORMAL`, `WARNING`, `CRITICAL`) across 10 IoT dustbins with automated 5-second polling.
+* **Cloud-Backed Authentication**: Secure user registration and login using **JWT & Bcrypt** passwords, stored in **MongoDB Atlas**.
+* **Field Officer Portal**: Access via numeric security codes (`1001`–`1004`) allowing field officers to view assigned critical bin tasks and execute "Work Done" actions.
+* **Gamified Speed Performance System**:
+  * **+10 Points**: Awarded for clearing critical overflows ($\ge 95\%$) within **5 minutes**.
+  * **-15 Points**: Deducted as a penalty if task completion exceeds **5 minutes**.
+  * **Live Leaderboard**: Real-time ranking of officers displayed on both administrative and officer portals.
+* **Automated Dispatch Logs**: Instant notification feed generated whenever a bin reaches critical capacity.
+* **Simulated IoT Telemetry**: Background simulator continuously updating bin metrics and overflow events.
+
+---
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+* **Framework**: Next.js 14 / React (App Router)
+* **Styling**: Tailwind CSS
+* **Icons**: Lucide React
+
+### **Backend & Authentication**
+* **Runtime**: Node.js & Express.js
+* **Authentication**: Password hashing via `bcryptjs`, structured auth routes (`/api/register`, `/api/login`, `/api/officer/login`)
+* **ORMs & Drivers**: Mongoose
+
+### **Database & Cloud Infrastructure**
+* **Cloud Database**: **MongoDB Atlas** (Managed Cloud MongoDB Service)
+* **Live Synchronization**: Real-time database updates triggering immediate frontend state changes.
+
+---
+
+## 🔒 Backend Authentication & Cloud Database Highlights
+
+### 1. **MongoDB Atlas Integration**
+The application uses **MongoDB Atlas** for secure, multi-region cloud data storage. All user credentials and IoT telemetry schemas are hosted on cloud clusters, ensuring data persistence and fault tolerance.
+
+### 2. **Secure User Authentication**
+* Passwords are salted and hashed using **Bcrypt** prior to database persistence.
+* Validates unique email registrations and enforces secure payload checks on incoming backend API queries.
+
+### 3. **Role & Security Code Verification**
+* **Admin Operators**: Authenticated via email/password credentials stored in MongoDB.
+* **Field Officers**: Authenticated via dedicated numeric access codes (`1001`–`1004`) linked directly to assigned bin documents in MongoDB Atlas.
+
+---
+
+## 📁 Project Architecture
+
+```
+smart-bin-system/
+├── backend/
+│   ├── models/
+│   │   ├── User.js          # User schema for Admin auth
+│   │   └── Bin.js           # Bin telemetry & officer schema
+│   ├── iotSimulator.js      # Background telemetry generator
+│   ├── server.js            # Express API server & routes
+│   └── .env                 # Database URI & configurations
+└── frontend/
+    └── src/
+        └── app/
+            ├── page.js          # Main Sign In / Registration Page
+            ├── dashboard/
+            │   └── page.js      # Admin Monitoring Dashboard & Leaderboard
+            └── officer/
+                └── page.js      # Field Officer Task Portal
+```
+
+---
+
+## 🚀 Environment Setup & Installation
+
+### Prerequisites
+* **Node.js**: v18.x or higher
+* **MongoDB Atlas Connection String**: (`MONGO_URI`)
+
+### Step 1: Environment Configuration (`backend/.env`)
+Create a `.env` file in your `backend` directory:
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/smartbin?retryWrites=true&w=majority
+```
+
+---
+
+## ⚙️ Running the Application
+
+To run the full end-to-end ecosystem, open **3 separate terminal windows**:
+
+### **Terminal 1: Backend Server**
+```bash
+cd backend
+node server.js
+```
+*Runs on `http://localhost:5000`*
+
+### **Terminal 2: IoT Telemetry Simulator**
+```bash
+cd backend
+node iotSimulator.js
+```
+*Simulates real-time bin capacity increases and triggers critical alerts in MongoDB Atlas.*
+
+### **Terminal 3: Next.js Frontend**
+```bash
+cd frontend
+npm run dev
+```
+*Runs on `http://localhost:3000`*
+
+---
+
+## 🔑 Test Officer Access Codes
+
+| Officer Name | Phone Number | Access Security Code |
+| :--- | :--- | :--- |
+| **Rajesh Kumar** | +91 9876543210 | `1001` |
+| **Amit Sharma** | +91 9876543211 | `1002` |
+| **Priya Singh** | +91 9876543212 | `1003` |
+| **Vikram Patel** | +91 9876543213 | `1004` |
+
+---
+
+## 🎮 System Workflow
+
+1. **Sign In**: Admins register/login at `http://localhost:3000`.
+2. **Monitor**: Admins view live telemetry metrics, automated alerts, and the performance leaderboard at `/dashboard`.
+3. **Simulate**: `iotSimulator.js` increases bin capacity; once a bin reaches $\ge 95\%$, an automated alert dispatch is logged.
+4. **Field Task Execution**: An officer logs into `http://localhost:3000/officer` using their access code (e.g., `1001`).
+5. **Real-time Sync & Gamification**:
+   * The officer clicks **"Mark Cleaned"**.
+   * If completed in $<5$ minutes, **+10 Points** are added to their profile; if $>5$ minutes, **-15 Points** are deducted.
+   * The bin capacity resets to 5% and is immediately cleared from the officer's task queue and synced live on the admin dashboard.

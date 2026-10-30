@@ -1,8 +1,7 @@
 # ♻️ Smart Bin Management System
 
 <div align="center">
-
-
+<img src="blob:https://gemini.google.com/767573ca-2568-4a77-9b2b-46bf70b76209">
 An end-to-end, IoT-powered Smart Waste Management platform built with **Next.js 14**, **Node.js**, **Express.js**, and **MongoDB Atlas**. Developed for the **IIT Kharagpur Techmania 2026** hackathon, this platform enables real-time waste telemetry monitoring, automated officer dispatch, dual-verification task resolution, and gamified field operations.
 
 </div>

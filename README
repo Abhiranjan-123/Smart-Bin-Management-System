@@ -2,10 +2,6 @@
 
 <div align="center">
 
-![Project Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)
-![Tech Stack](https://img.shields.io/badge/Stack-MERN%20%2F%20Next.js-blue)
-![Hackathon](https://img.shields.io/badge/Hackathon-IIT_Kharagpur_Techmania_2026-orange)
-![License](https://img.shields.io/badge/License-ISC-green)
 
 An end-to-end, IoT-powered Smart Waste Management platform built with **Next.js 14**, **Node.js**, **Express.js**, and **MongoDB Atlas**. Developed for the **IIT Kharagpur Techmania 2026** hackathon, this platform enables real-time waste telemetry monitoring, automated officer dispatch, dual-verification task resolution, and gamified field operations.
 
